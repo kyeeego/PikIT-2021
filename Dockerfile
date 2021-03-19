@@ -3,12 +3,14 @@
 #
 FROM maven:3.6.3-jdk-11-slim as build
 
-COPY src /home/app/src
-COPY pom.xml /home/app
+COPY pom.xml /home/app/
 
-WORKDIR /home/app
+WORKDIR /home/app/
 
-RUN mvn clean package -DskipTests
+RUN mvn -B dependency:resolve-plugins dependency:resolve
+
+COPY . .
+RUN mvn package -DskipTests
 
 #
 # RUN
