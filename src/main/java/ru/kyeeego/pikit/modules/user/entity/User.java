@@ -15,4 +15,17 @@ public class User {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "role", nullable = false)
+    private UserRole role;
+
 }

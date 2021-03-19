@@ -1,10 +1,10 @@
 package ru.kyeeego.pikit.modules.user.adapter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.kyeeego.pikit.modules.user.entity.User;
+import ru.kyeeego.pikit.modules.user.entity.dto.UserResponse;
+import ru.kyeeego.pikit.modules.user.port.IFindUser;
 import ru.kyeeego.pikit.modules.user.port.UserRepository;
 
 import java.util.List;
@@ -13,20 +13,21 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final IFindUser findUser;
 
-    @GetMapping
-    public List<User> find() {
-        return userRepository.findAll();
+    @Autowired
+    public UserController(IFindUser findUser) {
+        this.findUser = findUser;
     }
 
-    @GetMapping("/create")
-    public String createUser() {
-        User user = new User();
-        user.setName("Karl");
-        userRepository.save(user);
-        return "Saved";
+    @GetMapping
+    public List<UserResponse> find() {
+        return findUser.all();
+    }
+
+    @GetMapping("/{id}")
+    public UserResponse findByid(@PathVariable Long id) {
+        return findUser.byId(id);
     }
 
 }
