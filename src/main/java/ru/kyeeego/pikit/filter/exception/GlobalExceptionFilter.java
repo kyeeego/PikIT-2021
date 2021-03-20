@@ -1,10 +1,13 @@
 package ru.kyeeego.pikit.filter.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.kyeeego.pikit.exception.BadRequestException;
 import ru.kyeeego.pikit.modules.user.exception.UserAlreadyExistsException;
 import ru.kyeeego.pikit.modules.user.exception.UserNotFoundException;
 
@@ -14,7 +17,7 @@ public class GlobalExceptionFilter {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ErrorResponse handleRUntimeException(RuntimeException ex) {
+    public ErrorResponse handleRuntimeException(RuntimeException ex) {
         return defaultExceptionHandler(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -22,29 +25,36 @@ public class GlobalExceptionFilter {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorResponse handleUserNotFound(UserNotFoundException ex) {
-        return defaultExceptionHandler(ex,HttpStatus.NOT_FOUND);
+        return defaultExceptionHandler(ex, HttpStatus.NOT_FOUND);
     }
 
-//    @ExceptionHandler(BadRequestException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ResponseBody
-//    public ErrorResponse handleBadRequest(BadRequestException ex) {
-//        return defaultExceptionHandler(ex);
-//    }
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponse handleBadRequest(BadRequestException ex) {
+        return defaultExceptionHandler(ex, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public ErrorResponse handleUserAlreadyExists(UserAlreadyExistsException ex) {
-        return defaultExceptionHandler(ex,HttpStatus.CONFLICT);
+        return defaultExceptionHandler(ex, HttpStatus.CONFLICT);
     }
 
-//    @ExceptionHandler(BadCredentialsException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    @ResponseBody
-//    public ErrorResponse handleBadCredentials(BadCredentialsException ex) {
-//        return defaultExceptionHandler(ex);
-//    }
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleUsernameNotFound(UsernameNotFoundException ex) {
+        return defaultExceptionHandler(ex, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorResponse handleBadCredentials(BadCredentialsException ex) {
+        return defaultExceptionHandler(ex, HttpStatus.FORBIDDEN);
+    }
 //
 //    @ExceptionHandler(ForbiddenException.class)
 //    @ResponseStatus(HttpStatus.FORBIDDEN)
