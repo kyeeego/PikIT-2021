@@ -1,7 +1,7 @@
 package ru.kyeeego.pikit.modules.user.entity;
 
 public enum UserRole {
-    USER,
+    DEFAULT,
     MOD,
     EXPERT,
     SUPER
