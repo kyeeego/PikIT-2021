@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/pikit_test
+    username: user
+    password: pass
+    driverClassName: org.postgresql.Driver
+
+accesstoken:
+  secret: "hxQ3jhQf1YTjDpLlh0RMrJioGpS6k1iJbXxF67u8ybInp2rwKMhKklPFX4QCxioNYhKvClseUJfIdidbWwh6QA=="

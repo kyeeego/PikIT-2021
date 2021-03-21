@@ -64,7 +64,7 @@ public class SessionService implements ISessionService {
             throw new ExpiredException("Refresh token expired! Have to relogin");
 
         if (!isValidFingerprint(session, fingerprint))
-            throw new UnauthorizedException();
+            throw new UnauthorizedException("Invalid fingerprint");
 
         final UserDetails userDetails = myUserDetailsService
                 .loadUserByUsername(session.getUserEmail());
@@ -89,7 +89,7 @@ public class SessionService implements ISessionService {
     }
 
     private boolean isExpired(Session s) {
-        return s.getExpiresAt() >= System.currentTimeMillis();
+        return s.getExpiresAt() <= System.currentTimeMillis();
     }
 
     private boolean isValidFingerprint(Session s, String fingerprint) {
