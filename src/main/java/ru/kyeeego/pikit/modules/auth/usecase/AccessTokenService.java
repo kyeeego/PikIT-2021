@@ -51,14 +51,9 @@ public class AccessTokenService implements IAccessTokenService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
-    }
-
-    private String createToken(Map<String, Object> claims, String sub) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(sub)
+                .claim("ROLE", userDetails.getAuthorities())
+                .setSubject(userDetails.getUsername())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(getKey(), SignatureAlgorithm.HS256).compact();
