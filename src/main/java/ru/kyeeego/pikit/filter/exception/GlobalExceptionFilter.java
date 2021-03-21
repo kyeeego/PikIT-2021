@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.kyeeego.pikit.exception.BadRequestException;
+import ru.kyeeego.pikit.exception.ExpiredException;
+import ru.kyeeego.pikit.exception.ForbiddenException;
+import ru.kyeeego.pikit.exception.UnauthorizedException;
 import ru.kyeeego.pikit.modules.user.exception.UserAlreadyExistsException;
 import ru.kyeeego.pikit.modules.user.exception.UserNotFoundException;
 
@@ -50,25 +53,32 @@ public class GlobalExceptionFilter {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public ErrorResponse handleBadCredentials(BadCredentialsException ex) {
+        return defaultExceptionHandler(ex, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorResponse handleUnauthorized(UnauthorizedException ex) {
+        return defaultExceptionHandler(ex, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorResponse handleForbidden(ForbiddenException ex) {
         return defaultExceptionHandler(ex, HttpStatus.FORBIDDEN);
     }
-//
-//    @ExceptionHandler(ForbiddenException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    @ResponseBody
-//    public ErrorResponse handleForbidden(ForbiddenException ex) {
-//        return defaultExceptionHandler(ex);
-//    }
-//
-//    @ExceptionHandler(UnauthorizedException.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    @ResponseBody
-//    public ErrorResponse handleUnauthorized(UnauthorizedException ex) {
-//        return defaultExceptionHandler(ex);
-//    }
+
+    @ExceptionHandler(ExpiredException.class)
+    @ResponseStatus(HttpStatus.GONE)
+    @ResponseBody
+    public ErrorResponse handleExpired(ExpiredException ex) {
+        return defaultExceptionHandler(ex, HttpStatus.GONE);
+    }
 
     // TODO: handle all JWT exceptions at once somehow
 

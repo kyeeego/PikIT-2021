@@ -13,4 +13,7 @@ public class LogInDto {
 
     @NotNull
     private String password;
+
+    @NotNull
+    private String fingerprint;
 }

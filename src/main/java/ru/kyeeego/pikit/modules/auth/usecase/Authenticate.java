@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import ru.kyeeego.pikit.modules.auth.entity.MyUserDetailsService;
 import ru.kyeeego.pikit.modules.auth.entity.TokenPair;
 import ru.kyeeego.pikit.modules.auth.entity.dto.LogInDto;
+import ru.kyeeego.pikit.modules.auth.entity.dto.RefreshDto;
 import ru.kyeeego.pikit.modules.auth.port.IAccessTokenService;
 import ru.kyeeego.pikit.modules.auth.port.IAuthenticate;
+import ru.kyeeego.pikit.modules.session.port.ISessionService;
 import ru.kyeeego.pikit.modules.user.entity.User;
 import ru.kyeeego.pikit.modules.user.exception.UserNotFoundException;
 import ru.kyeeego.pikit.modules.user.port.UserRepository;
@@ -20,22 +22,20 @@ import ru.kyeeego.pikit.modules.user.port.UserRepository;
 @Service
 public class Authenticate implements IAuthenticate {
 
-    private final UserRepository userRepository;
-    private final IAccessTokenService accessTokenService;
+    private final ISessionService sessionService;
     private final AuthenticationManager authenticationManager;
     private final MyUserDetailsService myUserDetailsService;
 
     @Autowired
     public Authenticate(AuthenticationManager authenticationManager,
                         MyUserDetailsService myUserDetailsService,
-                        UserRepository userRepository,
-                        IAccessTokenService accessTokenService) {
+                        ISessionService sessionService) {
         this.authenticationManager = authenticationManager;
         this.myUserDetailsService = myUserDetailsService;
-        this.accessTokenService = accessTokenService;
-        this.userRepository = userRepository;
+        this.sessionService = sessionService;
     }
 
+    @Override
     public TokenPair authenticate(LogInDto logInDto) {
         try {
             authenticationManager.authenticate(
@@ -51,17 +51,15 @@ public class Authenticate implements IAuthenticate {
         final UserDetails userDetails = myUserDetailsService
                 .loadUserByUsername(logInDto.getEmail());
 
-        // TODO: generate session
+        return sessionService.create(userDetails, logInDto.getFingerprint());
+    }
 
-        final String accessToken = accessTokenService.generateToken(userDetails);
-
-        User user = userRepository
-                .findByEmail(logInDto.getEmail())
-                .orElseThrow(UserNotFoundException::new);
-
-        userRepository.save(user);
-
-        return new TokenPair(accessToken, "refreshToken");
+    @Override
+    public TokenPair refreshTokens(RefreshDto refreshDto) {
+        return sessionService.renew(
+                refreshDto.getFingerprint(),
+                refreshDto.getRefreshToken()
+        );
     }
 
 }
