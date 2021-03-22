@@ -11,10 +11,8 @@ import ru.kyeeego.pikit.modules.user.entity.User;
 import ru.kyeeego.pikit.modules.user.entity.UserRole;
 import ru.kyeeego.pikit.modules.user.port.UserRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -36,7 +34,9 @@ public class MyUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 us.getEmail(),
                 us.getPassword(),
-                getRole(us.getRole())
+                Arrays.stream(us.getRole())
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList())
         );
     }
 

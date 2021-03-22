@@ -1,17 +1,28 @@
 package ru.kyeeego.pikit.modules.user.entity;
 
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import ru.kyeeego.pikit.modules.user.entity.dto.UserCreateDto;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Data
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
+@TypeDefs({
+        @TypeDef(
+                name = "string-array",
+                typeClass = StringArrayType.class
+        )
+})
 public class User {
 
     @Id
@@ -30,8 +41,11 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "role", nullable = false)
-    private UserRole role;
+    @Type(type = "string-array")
+    @Column(name = "role",
+            nullable = false,
+            columnDefinition = "text[]")
+    private String[] role;
 
     public User(UserCreateDto dto) {
         this.name = dto.getName();
