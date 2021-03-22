@@ -39,10 +39,4 @@ public class MyUserDetailsService implements UserDetailsService {
                         .collect(Collectors.toList())
         );
     }
-
-    private Collection<GrantedAuthority> getRole(UserRole role) {
-        Collection<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(role.toString()));
-        return roles;
-    }
 }
