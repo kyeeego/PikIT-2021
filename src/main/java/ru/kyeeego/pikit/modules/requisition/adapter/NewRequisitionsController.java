@@ -47,9 +47,10 @@ public class NewRequisitionsController {
     }
 
     @PutMapping("/{id}")
+    // FIXME: this line is bullshit                                                especially here
     @PreAuthorize("hasAnyAuthority('SUPER', 'MOD') or (hasAuthority('DEFAULT') and #id eq principal.id)")
     public Requisition updateOne(@PathVariable("id") Long id,
-                                  @RequestBody RequisitionUpdateDto requisitionUpdateDto) {
+                                 @RequestBody RequisitionUpdateDto requisitionUpdateDto) {
         return modifyRequisition.updateOne(id, requisitionUpdateDto);
     }
 

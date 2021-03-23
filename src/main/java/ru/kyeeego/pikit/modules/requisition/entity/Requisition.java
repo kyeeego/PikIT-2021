@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.requisition.entity;
 
+import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import com.vladmihalcea.hibernate.type.array.LongArrayType;
 import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.AllArgsConstructor;
@@ -13,8 +14,10 @@ import ru.kyeeego.pikit.modules.requisition.entity.dto.VotingTypes;
 import ru.kyeeego.pikit.modules.user.entity.User;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "requisitions")
@@ -23,12 +26,8 @@ import java.util.TreeSet;
 @NoArgsConstructor
 @TypeDefs({
         @TypeDef(
-                name = "string-array",
-                typeClass = StringArrayType.class
-        ),
-        @TypeDef(
-                name = "id-array",
-                typeClass = LongArrayType.class
+                name = "list-array",
+                typeClass = ListArrayType.class
         )
 })
 public class Requisition {
@@ -37,8 +36,8 @@ public class Requisition {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "authorId", nullable = false)
-    private Long authorId;
+    @Column(name = "authorEmail", nullable = false)
+    private String authorEmail;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -52,17 +51,17 @@ public class Requisition {
     @Column(name = "adress")
     private String adress;
 
-    @Type(type = "string-array")
+    @Type(type = "list-array")
     @Column(name = "docs",
             columnDefinition = "text[]",
             nullable = false)
-    private Set<String> docs;
+    private List<String> docs;
 
-    @Type(type = "id-array")
+    @Type(type = "list-array")
     @Column(name = "voted",
             columnDefinition = "bigint[]",
             nullable = false)
-    private Set<Long> voted;
+    private List<Long> voted;
 
     @Column(name = "status", nullable = false)
     private RequisitionStatus status;
@@ -79,8 +78,8 @@ public class Requisition {
         this.cost = req.getCost();
         this.adress = req.getAdress();
 
-        this.docs = new TreeSet<String>();
-        this.voted = new TreeSet<Long>();
+        this.docs = Collections.emptyList();
+        this.voted = Collections.emptyList();
 
         VotingTypes votingTypes = new VotingTypes();
         this.studVoting = votingTypes.isStudent();

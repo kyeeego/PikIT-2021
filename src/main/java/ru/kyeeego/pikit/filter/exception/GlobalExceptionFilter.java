@@ -22,6 +22,7 @@ public class GlobalExceptionFilter {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse handleRuntimeException(RuntimeException ex) {
+        ex.printStackTrace();
         return defaultExceptionHandler(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
