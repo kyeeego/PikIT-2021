@@ -11,6 +11,7 @@ import ru.kyeeego.pikit.exception.BadRequestException;
 import ru.kyeeego.pikit.exception.ExpiredException;
 import ru.kyeeego.pikit.exception.ForbiddenException;
 import ru.kyeeego.pikit.exception.UnauthorizedException;
+import ru.kyeeego.pikit.modules.requisition.exception.RequisitionNotFoundException;
 import ru.kyeeego.pikit.modules.user.exception.UserAlreadyExistsException;
 import ru.kyeeego.pikit.modules.user.exception.UserNotFoundException;
 
@@ -78,6 +79,13 @@ public class GlobalExceptionFilter {
     @ResponseBody
     public ErrorResponse handleExpired(ExpiredException ex) {
         return defaultExceptionHandler(ex, HttpStatus.GONE);
+    }
+
+    @ExceptionHandler(RequisitionNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleReqNotFound(RequisitionNotFoundException ex) {
+        return defaultExceptionHandler(ex, HttpStatus.NOT_FOUND);
     }
 
     // TODO: handle all JWT exceptions at once somehow
