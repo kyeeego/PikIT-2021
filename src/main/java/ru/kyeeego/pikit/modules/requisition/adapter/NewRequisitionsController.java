@@ -13,6 +13,7 @@ import ru.kyeeego.pikit.modules.requisition.port.IFindRequisition;
 import ru.kyeeego.pikit.modules.requisition.port.IModifyRequisition;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -47,11 +48,10 @@ public class NewRequisitionsController {
     }
 
     @PutMapping("/{id}")
-    // FIXME: this line is bullshit                                                especially here
-    @PreAuthorize("hasAnyAuthority('SUPER', 'MOD') or (hasAuthority('DEFAULT') and #id eq principal.id)")
     public Requisition updateOne(@PathVariable("id") Long id,
-                                 @RequestBody RequisitionUpdateDto requisitionUpdateDto) {
-        return modifyRequisition.updateOne(id, requisitionUpdateDto);
+                                 @RequestBody RequisitionUpdateDto body,
+                                 Principal user) {
+        return modifyRequisition.updateOne(id, body, user);
     }
 
     @PutMapping("/{id}/approve")
