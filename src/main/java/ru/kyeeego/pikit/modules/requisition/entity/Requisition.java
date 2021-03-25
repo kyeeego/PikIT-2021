@@ -53,9 +53,10 @@ public class Requisition {
 
     @Type(type = "list-array")
     @Column(name = "voted",
-            columnDefinition = "bigint[]",
+            columnDefinition = "text[]",
             nullable = false)
-    private List<Long> voted;
+    // TODO: switch to set
+    private List<String> voted;
 
     @Column(name = "status", nullable = false)
     private RequisitionStatus status;
@@ -76,7 +77,7 @@ public class Requisition {
         this.docs.add(doc);
     }
 
-    public void addVoter(Long userId) {
-        this.voted.add(userId);
+    public void addVoter(String email) {
+        this.voted.add(email);
     }
 }
