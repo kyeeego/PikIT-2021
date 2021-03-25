@@ -1,8 +1,6 @@
 package ru.kyeeego.pikit.modules.requisition.entity;
 
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
-import com.vladmihalcea.hibernate.type.array.LongArrayType;
-import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,12 +8,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import ru.kyeeego.pikit.modules.requisition.entity.dto.RequisitionCreateDto;
-import ru.kyeeego.pikit.modules.requisition.entity.dto.VotingTypes;
-import ru.kyeeego.pikit.modules.user.entity.User;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,12 +60,6 @@ public class Requisition {
     @Column(name = "status", nullable = false)
     private RequisitionStatus status;
 
-    @Column(name = "studVoting", nullable = false)
-    private boolean studVoting;
-
-    @Column(name = "expVoting", nullable = false)
-    private boolean expVoting;
-
     public Requisition(RequisitionCreateDto req) {
         this.title = req.getTitle();
         this.body = req.getBody();
@@ -81,16 +69,7 @@ public class Requisition {
         this.docs = Collections.emptyList();
         this.voted = Collections.emptyList();
 
-        VotingTypes votingTypes = new VotingTypes();
-        this.studVoting = votingTypes.isStudent();
-        this.expVoting = votingTypes.isExpert();
-
         this.status = RequisitionStatus.MODERATING;
-    }
-
-    public void setVotingTypes(VotingTypes votingTypes) {
-        this.studVoting = votingTypes.isStudent();
-        this.expVoting = votingTypes.isExpert();
     }
 
     public void addDoc(String doc) {

@@ -7,7 +7,6 @@ import ru.kyeeego.pikit.modules.requisition.entity.Requisition;
 import ru.kyeeego.pikit.modules.requisition.entity.RequisitionStatus;
 import ru.kyeeego.pikit.modules.requisition.entity.dto.RequisitionCreateDto;
 import ru.kyeeego.pikit.modules.requisition.entity.dto.RequisitionUpdateDto;
-import ru.kyeeego.pikit.modules.requisition.entity.dto.VotingTypes;
 import ru.kyeeego.pikit.modules.requisition.port.ICreateRequisition;
 import ru.kyeeego.pikit.modules.requisition.port.IFindRequisition;
 import ru.kyeeego.pikit.modules.requisition.port.IModifyRequisition;
@@ -55,9 +54,8 @@ public class NewRequisitionsController {
     }
 
     @PutMapping("/{id}/approve")
-    public Requisition approveOne(@PathVariable("id") Long id,
-                                  @RequestBody VotingTypes votings) {
-        return modifyRequisition.approve(id, votings);
+    public Requisition approveOne(@PathVariable("id") Long id) {
+        return modifyRequisition.approve(id);
     }
 
     @PutMapping("/{id}/close")

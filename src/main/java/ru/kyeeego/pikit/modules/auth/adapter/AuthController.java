@@ -32,4 +32,6 @@ public class AuthController {
     public TokenPair refresh(@RequestBody @Valid RefreshDto refreshDto) {
         return authenticate.refreshTokens(refreshDto);
     }
+
+    // TODO: add logout
 }
