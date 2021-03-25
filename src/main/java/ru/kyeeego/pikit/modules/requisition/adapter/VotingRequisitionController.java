@@ -35,6 +35,7 @@ public class VotingRequisitionController {
     @PutMapping("/{id}")
     public void vote(@PathVariable("id") Long id) {
         voteForRequisition.vote(id);
+        voteForRequisition.update(id);
     }
 
 }

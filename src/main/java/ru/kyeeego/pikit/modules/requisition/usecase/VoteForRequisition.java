@@ -39,4 +39,15 @@ public class VoteForRequisition implements IVoteForRequisition {
         repository.save(req);
     }
 
+    @Override
+    public void update(Long id) {
+        Requisition req = repository
+                .findByIdAndStatus(id, RequisitionStatus.STUD_VOTING)
+                .orElseThrow(RequisitionNotFoundException::new);
+
+        if (req.getVoted().size() >= 200) {
+            req.setStatus(RequisitionStatus.EXP_VOTING);
+            repository.save(req);
+        }
+    }
 }
