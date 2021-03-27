@@ -45,7 +45,7 @@ public class VoteForRequisition implements IVoteForRequisition {
                 .findByIdAndStatus(id, RequisitionStatus.STUD_VOTING)
                 .orElseThrow(RequisitionNotFoundException::new);
 
-        if (req.getVoted().size() >= 200) {
+        if (req.getVoted().size() >= req.getRequiredVotes()) {
             req.setStatus(RequisitionStatus.EXP_VOTING);
             repository.save(req);
         }

@@ -61,6 +61,9 @@ public class Requisition {
     @Column(name = "status", nullable = false)
     private RequisitionStatus status;
 
+    @Column(name = "required_votes")
+    private int requiredVotes;
+
     public Requisition(RequisitionCreateDto req) {
         this.title = req.getTitle();
         this.body = req.getBody();
