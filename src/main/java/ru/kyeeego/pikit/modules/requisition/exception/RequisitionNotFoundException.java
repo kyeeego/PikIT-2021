@@ -1,11 +1,14 @@
 package ru.kyeeego.pikit.modules.requisition.exception;
 
-public class RequisitionNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import ru.kyeeego.pikit.exception.ApiException;
+
+public class RequisitionNotFoundException extends ApiException {
     public RequisitionNotFoundException() {
-        super("Requisition not found");
+        super("Requisition not found", HttpStatus.NOT_FOUND);
     }
 
     public RequisitionNotFoundException(String message) {
-        super(message);
+        super(message, HttpStatus.NOT_FOUND);
     }
 }

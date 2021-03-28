@@ -1,11 +1,14 @@
 package ru.kyeeego.pikit.modules.user.exception;
 
-public class UserAlreadyExistsException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+import ru.kyeeego.pikit.exception.ApiException;
+
+public class UserAlreadyExistsException extends ApiException {
     public UserAlreadyExistsException() {
-        super("User with this email already exists");
+        super("User with this email already exists", HttpStatus.CONFLICT);
     }
 
     public UserAlreadyExistsException(String message) {
-        super(message);
+        super(message, HttpStatus.CONFLICT);
     }
 }
