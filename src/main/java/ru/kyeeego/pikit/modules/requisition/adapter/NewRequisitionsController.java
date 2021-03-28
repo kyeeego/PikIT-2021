@@ -42,26 +42,25 @@ public class NewRequisitionsController {
         return findRequisition.findByStatus(RequisitionStatus.MODERATING);
     }
 
-    @GetMapping("/{id}")
-    public Requisition findOneNew(@PathVariable("id") Long id) {
+    @GetMapping("/")
+    public Requisition findOneNew(@RequestParam("id") Long id) {
         return findRequisition.findOne(id, RequisitionStatus.MODERATING);
     }
 
-    @PutMapping("/{id}")
-    public Requisition updateOne(@PathVariable("id") Long id,
-                                 @RequestBody RequisitionUpdateDto body,
-                                 Principal user) {
-        return modifyRequisition.updateOne(id, body, user);
+    @PutMapping("/update")
+    public Requisition updateOne(@RequestParam("id") Long id,
+                                 @RequestBody RequisitionUpdateDto body) {
+        return modifyRequisition.updateOne(id, body);
     }
 
-    @PutMapping("/{id}/approve")
-    public Requisition approveOne(@PathVariable("id") Long id,
+    @PutMapping("/approve")
+    public Requisition approveOne(@RequestParam("id") Long id,
                                   @RequestBody @Valid VotingDto votingDto) {
         return modifyRequisition.approve(id, votingDto);
     }
 
-    @PutMapping("/{id}/close")
-    public Requisition closeOne(@PathVariable("id") Long id) {
+    @PutMapping("/close")
+    public Requisition closeOne(@RequestParam("id") Long id) {
         return modifyRequisition.close(id);
     }
 }

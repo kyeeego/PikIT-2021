@@ -27,13 +27,13 @@ public class VotingRequisitionController {
         return findRequisition.findByStatus(RequisitionStatus.STUD_VOTING);
     }
 
-    @GetMapping("/{id}")
-    public Requisition findOne(@PathVariable("id") Long id) {
+    @GetMapping("/")
+    public Requisition findOne(@RequestParam("id") Long id) {
         return findRequisition.findOne(id, RequisitionStatus.STUD_VOTING);
     }
 
-    @PutMapping("/{id}")
-    public void vote(@PathVariable("id") Long id) {
+    @PutMapping("/")
+    public void vote(@RequestParam("id") Long id) {
         voteForRequisition.vote(id);
         voteForRequisition.update(id);
     }

@@ -9,11 +9,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import ru.kyeeego.pikit.filter.InFilterExceptionFilter;
 import ru.kyeeego.pikit.filter.JwtAuthorizationFilter;
 import ru.kyeeego.pikit.modules.auth.entity.MyUserDetailsService;
 import ru.kyeeego.pikit.modules.user.entity.UserRole;
@@ -26,12 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MyUserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final InFilterExceptionFilter inFilterExceptionFilter;
 
     @Autowired
     public SecurityConfig(MyUserDetailsService userDetailsService,
-                          JwtAuthorizationFilter jwtAuthorizationFilter) {
+                          JwtAuthorizationFilter jwtAuthorizationFilter,
+                          InFilterExceptionFilter inFilterExceptionFilter) {
         this.userDetailsService = userDetailsService;
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+        this.inFilterExceptionFilter = inFilterExceptionFilter;
     }
 
     @Override
@@ -63,10 +68,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .antMatchers("/api/test/super").hasAnyAuthority(UserRole.Access.SUPER)
                 .antMatchers("/api/v1/req/new").hasAnyAuthority(UserRole.Access.DEFAULT)
-                .antMatchers(HttpMethod.PUT, "/api/v1/req/new/{id}").hasAnyAuthority(UserRole.Access.DEFAULT)
+                .antMatchers(HttpMethod.PUT, "/api/v1/req/new/update").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers("/api/v1/req/new/**").hasAnyAuthority(UserRole.Access.MOD)
                 .anyRequest().authenticated();
 
+        httpSecurity.addFilterBefore(inFilterExceptionFilter, ChannelProcessingFilter.class);
         httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

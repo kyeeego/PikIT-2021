@@ -1,6 +1,7 @@
 package ru.kyeeego.pikit.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,14 +11,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import ru.kyeeego.pikit.modules.auth.entity.MyUserDetailsService;
 import ru.kyeeego.pikit.modules.auth.usecase.AccessTokenService;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Service
-public class JwtAuthorizationFilter extends OncePerRequestFilter {
+@Order(1)
+public class JwtAuthorizationFilter implements Filter {
 
     private final MyUserDetailsService myUserDetailsService;
     private final AccessTokenService jwtService;
@@ -29,23 +30,24 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
-                                    FilterChain filterChain)
+    public void doFilter(ServletRequest request,
+                            ServletResponse response,
+                            FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String authHeader = httpServletRequest.getHeader("Authorization");
+        HttpServletRequest req = (HttpServletRequest) request;
+
+        final String authHeader = req.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            filterChain.doFilter(request, response);
             return;
         }
-
 
         final String accessToken = authHeader.split(" ")[1];
 
         final String email = jwtService.extractEmail(accessToken);
         if (email == null || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -55,11 +57,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     userDetails, null, userDetails.getAuthorities()
             );
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource()
-                    .buildDetails(httpServletRequest));
+                    .buildDetails(req));
 
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
+        filterChain.doFilter(request, response);
     }
 
 }

@@ -30,8 +30,8 @@ public class UserController {
         return findUser.all();
     }
 
-    @GetMapping("/{id}")
-    public UserResponse findByid(@PathVariable Long id) {
+    @GetMapping("/")
+    public UserResponse findByid(@RequestParam("id") Long id) {
         return findUser.byId(id);
     }
 
