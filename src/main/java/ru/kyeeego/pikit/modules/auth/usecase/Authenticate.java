@@ -62,4 +62,8 @@ public class Authenticate implements IAuthenticate {
         );
     }
 
+    @Override
+    public void logout(String fingerprint) {
+        sessionService.end(fingerprint);
+    }
 }

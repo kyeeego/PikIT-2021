@@ -10,7 +10,6 @@ import ru.kyeeego.pikit.modules.requisition.port.RequisitionRepository;
 @Configuration
 public class BeanRegistration {
 
-    // TODO: add InFilterExceptionFilter
     @Autowired
     private RequisitionRepository repository;
 

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kyeeego.pikit.modules.auth.entity.TokenPair;
 import ru.kyeeego.pikit.modules.auth.entity.dto.LogInDto;
+import ru.kyeeego.pikit.modules.auth.entity.dto.LogoutDto;
 import ru.kyeeego.pikit.modules.auth.entity.dto.RefreshDto;
 import ru.kyeeego.pikit.modules.auth.port.IAuthenticate;
 
@@ -33,5 +34,8 @@ public class AuthController {
         return authenticate.refreshTokens(refreshDto);
     }
 
-    // TODO: add logout
+    @PostMapping("/logout")
+    public void logout(@RequestBody @Valid LogoutDto dto) {
+        authenticate.logout(dto.getFingerprint());
+    }
 }

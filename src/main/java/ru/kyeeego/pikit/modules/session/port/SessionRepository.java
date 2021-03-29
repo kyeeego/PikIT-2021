@@ -13,5 +13,6 @@ import java.util.Optional;
 public interface SessionRepository extends JpaRepository<Session, Long> {
     List<Session> findByUserEmail(String userEmail);
     void deleteByUserEmail(String userEmail);
+    void deleteByFingerprint(String fingerprint);
     Optional<Session> findByRefreshToken(String refreshToken);
 }

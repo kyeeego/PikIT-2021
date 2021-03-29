@@ -58,24 +58,10 @@ public class ModifyRequisition implements IModifyRequisition {
     }
 
     @Override
-    // TODO: Make the code clean
     public Requisition updateOne(Long id, RequisitionUpdateDto requisitionUpdateDto) {
         Requisition requisition = repository
                 .findByIdAndStatus(id, RequisitionStatus.MODERATING)
                 .orElseThrow(RequisitionNotFoundException::new);
-
-//        Collection<SimpleGrantedAuthority> authorities =
-//                (Collection<SimpleGrantedAuthority>)
-//                        SecurityContextHolder.getContext()
-//                                .getAuthentication()
-//                                .getAuthorities();
-//
-//        if (!authorities.containsAll(
-//                Arrays.stream(UserRole.Access.MOD)
-//                        .map(SimpleGrantedAuthority::new)
-//                        .collect(Collectors.toList())
-//        ) && !requisition.getAuthorEmail().equals(user.getName()))
-//            throw new ForbiddenException("Not the author or super user");
 
         UpdateUtils.copyNonNullProperties(requisitionUpdateDto, requisition);
 
