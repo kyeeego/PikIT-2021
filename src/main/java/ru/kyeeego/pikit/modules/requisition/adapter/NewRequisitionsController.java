@@ -63,4 +63,9 @@ public class NewRequisitionsController {
     public Requisition closeOne(@RequestParam("id") Long id) {
         return modifyRequisition.close(id);
     }
+
+    @DeleteMapping("/delete")
+    public void deleteOne(@RequestParam("id") Long id) {
+        modifyRequisition.delete(id);
+    }
 }

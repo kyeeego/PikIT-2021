@@ -19,7 +19,10 @@ public class BeanRegistration {
                 = new FilterRegistrationBean<>();
 
         filter.setFilter(new ModifyReqAccessFilter(repository));
-        filter.addUrlPatterns("/api/v1/req/new/update/*");
+        filter.addUrlPatterns(
+                "/api/v1/req/new/update/*",
+                "/api/v1/req/new/delete/*"
+        );
 
         return filter;
     }

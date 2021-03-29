@@ -33,11 +33,6 @@ public class ModifyReqAccessFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("INITIALIZE ModifyReqAccessFilter");
-    }
-
-    @Override
     public void doFilter(
             ServletRequest servletRequest,
             ServletResponse servletResponse,
@@ -65,7 +60,7 @@ public class ModifyReqAccessFilter implements Filter {
                 && !authorities.containsAll(Arrays.stream(UserRole.Access.MOD)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList()))) {
-            return;
+            throw new ForbiddenException("Not author or superuser");
         }
 
         filterChain.doFilter(servletRequest, servletResponse);

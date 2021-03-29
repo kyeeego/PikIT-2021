@@ -12,5 +12,7 @@ public interface IModifyRequisition {
 
     Requisition close(Long id);
 
+    void delete(Long id);
+
     Requisition updateOne(Long id, RequisitionUpdateDto requisitionUpdateDto);
 }

@@ -68,6 +68,11 @@ public class ModifyRequisition implements IModifyRequisition {
         return repository.save(requisition);
     }
 
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
     private Requisition setRequisitionStatusById(Long id, RequisitionStatus status) {
         Requisition requisition = repository
                 .findByIdAndStatus(id, RequisitionStatus.MODERATING)
