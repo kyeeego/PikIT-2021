@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.kyeeego.pikit.exception.*;
+import ru.kyeeego.pikit.modules.files.FileStorageException;
 import ru.kyeeego.pikit.modules.requisition.exception.RequisitionNotFoundException;
 import ru.kyeeego.pikit.modules.user.exception.UserAlreadyExistsException;
 import ru.kyeeego.pikit.modules.user.exception.UserNotFoundException;
@@ -80,6 +81,13 @@ public class GlobalExceptionFilter {
         return defaultExceptionHandler(ex);
     }
 
+    @ExceptionHandler(FileStorageException.class)
+    @ResponseStatus(HttpStatus.INSUFFICIENT_STORAGE)
+    @ResponseBody
+    public ErrorResponse handleFileStorageEx(FileStorageException ex) {
+        return defaultExceptionHandler(ex);
+    }
+
     @ExceptionHandler(RequisitionNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
@@ -88,16 +96,10 @@ public class GlobalExceptionFilter {
     }
 
     private <E extends ApiException> ErrorResponse defaultExceptionHandler(E ex) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(ex.getMessage());
-        errorResponse.setStatus(ex.getStatus());
-        return errorResponse;
+        return new ErrorResponse(ex.getStatus(), ex.getMessage());
     }
 
     private <E extends RuntimeException> ErrorResponse runtimeExceptionHandler(E ex, HttpStatus status) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(ex.getMessage());
-        errorResponse.setStatus(status);
-        return errorResponse;
+        return new ErrorResponse(status, ex.getMessage());
     }
 }

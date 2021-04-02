@@ -2,6 +2,7 @@ package ru.kyeeego.pikit.filter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,18 +26,28 @@ public class InFilterExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } catch (ApiException e) {
 
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setStatus(e.getStatus());
-            errorResponse.setMessage(e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(
+                    e.getStatus(), e.getMessage()
+            );
+
 
             httpServletResponse.setStatus(e.getStatus().value());
             httpServletResponse.getWriter().write(JSON(errorResponse));
 
+        } catch (JwtException e) {
+
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.FORBIDDEN, e.getMessage()
+            );
+
+            httpServletResponse.setStatus(errorResponse.getStatus().value());
+            httpServletResponse.getWriter().write(JSON(errorResponse));
+
         } catch (Exception e) {
 
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            errorResponse.setMessage(e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()
+            );
 
             httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             httpServletResponse.getWriter().write(JSON(errorResponse));
