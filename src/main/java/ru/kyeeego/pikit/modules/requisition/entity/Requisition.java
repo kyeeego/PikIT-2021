@@ -55,7 +55,6 @@ public class Requisition {
     @Column(name = "voted",
             columnDefinition = "text[]",
             nullable = false)
-    // TODO: switch to set
     private List<String> voted;
 
     @Column(name = "status", nullable = false)

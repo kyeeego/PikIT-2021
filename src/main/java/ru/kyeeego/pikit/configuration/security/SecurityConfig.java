@@ -68,7 +68,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .antMatchers("/api/test/super").hasAnyAuthority(UserRole.Access.SUPER)
                 .antMatchers("/api/v1/req/new").hasAnyAuthority(UserRole.Access.DEFAULT)
+                .antMatchers("/static/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/v1/req/new/update").hasAnyAuthority(UserRole.Access.DEFAULT)
+                .antMatchers(HttpMethod.POST, "/api/v1/req/new/file").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers(HttpMethod.DELETE, "/api/v1/req/new/delete").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers("/api/v1/req/new/**").hasAnyAuthority(UserRole.Access.MOD)
                 .anyRequest().authenticated();

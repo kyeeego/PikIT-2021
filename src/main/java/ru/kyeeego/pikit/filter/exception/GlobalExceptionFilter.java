@@ -96,10 +96,12 @@ public class GlobalExceptionFilter {
     }
 
     private <E extends ApiException> ErrorResponse defaultExceptionHandler(E ex) {
+        ex.printStackTrace();
         return new ErrorResponse(ex.getStatus(), ex.getMessage());
     }
 
     private <E extends RuntimeException> ErrorResponse runtimeExceptionHandler(E ex, HttpStatus status) {
+        ex.printStackTrace();
         return new ErrorResponse(status, ex.getMessage());
     }
 }

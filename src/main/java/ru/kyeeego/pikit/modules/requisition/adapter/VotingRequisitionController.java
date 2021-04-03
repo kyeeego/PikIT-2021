@@ -22,17 +22,17 @@ public class VotingRequisitionController {
         this.voteForRequisition = voteForRequisition;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Requisition> findAllInVotingStatus() {
         return findRequisition.findByStatus(RequisitionStatus.STUD_VOTING);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public Requisition findOne(@RequestParam("id") Long id) {
         return findRequisition.findOne(id, RequisitionStatus.STUD_VOTING);
     }
 
-    @PutMapping("/")
+    @PutMapping
     public void vote(@RequestParam("id") Long id) {
         voteForRequisition.vote(id);
         voteForRequisition.update(id);

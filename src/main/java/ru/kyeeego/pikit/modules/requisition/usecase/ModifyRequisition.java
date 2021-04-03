@@ -31,8 +31,6 @@ public class ModifyRequisition implements IModifyRequisition {
         this.repository = repository;
     }
 
-    // TODO: Delete reqs
-
     @Override
     public Requisition approve(Long id, VotingDto votingDto) {
         Requisition requisition = repository
