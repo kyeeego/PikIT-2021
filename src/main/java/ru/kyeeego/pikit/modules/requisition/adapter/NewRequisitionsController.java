@@ -17,7 +17,6 @@ import ru.kyeeego.pikit.modules.requisition.port.ICreateRequisition;
 import ru.kyeeego.pikit.modules.requisition.port.IFindRequisition;
 import ru.kyeeego.pikit.modules.requisition.port.IModifyRequisition;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -87,22 +86,16 @@ public class NewRequisitionsController {
 
     @GetMapping("/file/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
-        // TODO: for every file
         String[] splitted = filename.split("\\.");
         String ext = splitted[splitted.length - 1];
 
-        Optional<MediaType> mediaType = Optional.ofNullable(extensionToMediaType.get("ext"));
+        Optional<MediaType> mediaType = Optional.ofNullable(extensionToMediaType.get(ext));
 
         return ResponseEntity
                 .ok()
                 .contentType(mediaType.orElse(MediaType.TEXT_PLAIN))
                 .body(fileStorage.load(filename));
     }
-
-//    @GetMapping("/file/{filename:.+}")
-//    public Resource getFile(@PathVariable("filename") String filename) {
-//        return fileStorage.load(filename);
-//    }
 
     // TODO: email notifications on status change
 }
