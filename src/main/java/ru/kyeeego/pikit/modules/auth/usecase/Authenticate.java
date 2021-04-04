@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.auth.usecase;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,20 +21,12 @@ import ru.kyeeego.pikit.modules.user.port.UserRepository;
 
 
 @Service
+@RequiredArgsConstructor
 public class Authenticate implements IAuthenticate {
 
     private final ISessionService sessionService;
     private final AuthenticationManager authenticationManager;
     private final MyUserDetailsService myUserDetailsService;
-
-    @Autowired
-    public Authenticate(AuthenticationManager authenticationManager,
-                        MyUserDetailsService myUserDetailsService,
-                        ISessionService sessionService) {
-        this.authenticationManager = authenticationManager;
-        this.myUserDetailsService = myUserDetailsService;
-        this.sessionService = sessionService;
-    }
 
     @Override
     public TokenPair authenticate(LogInDto logInDto) {

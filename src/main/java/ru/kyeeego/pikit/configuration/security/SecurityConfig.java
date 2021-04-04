@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.configuration.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -24,20 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MyUserDetailsService userDetailsService;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final InFilterExceptionFilter inFilterExceptionFilter;
-
-    @Autowired
-    public SecurityConfig(MyUserDetailsService userDetailsService,
-                          JwtAuthorizationFilter jwtAuthorizationFilter,
-                          InFilterExceptionFilter inFilterExceptionFilter) {
-        this.userDetailsService = userDetailsService;
-        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
-        this.inFilterExceptionFilter = inFilterExceptionFilter;
-    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {

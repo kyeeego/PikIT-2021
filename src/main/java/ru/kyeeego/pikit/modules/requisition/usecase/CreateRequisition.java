@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.requisition.usecase;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,14 +11,10 @@ import ru.kyeeego.pikit.modules.requisition.port.ICreateRequisition;
 import ru.kyeeego.pikit.modules.requisition.port.RequisitionRepository;
 
 @Service
+@RequiredArgsConstructor
 public class CreateRequisition implements ICreateRequisition {
 
     private final RequisitionRepository repository;
-
-    @Autowired
-    public CreateRequisition(RequisitionRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public Requisition create(RequisitionCreateDto createRequisitionDto) {

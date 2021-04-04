@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.session.usecase;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,20 +18,12 @@ import ru.kyeeego.pikit.modules.session.port.SessionRepository;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class SessionService implements ISessionService {
 
     private final SessionRepository repository;
     private final IAccessTokenService accessTokenService;
     private final MyUserDetailsService myUserDetailsService;
-
-    @Autowired
-    public SessionService(SessionRepository repository,
-                          IAccessTokenService accessTokenService,
-                          MyUserDetailsService myUserDetailsService) {
-        this.repository = repository;
-        this.accessTokenService = accessTokenService;
-        this.myUserDetailsService = myUserDetailsService;
-    }
 
     @Override
     public TokenPair create(UserDetails userDetails, String fingerprint) {

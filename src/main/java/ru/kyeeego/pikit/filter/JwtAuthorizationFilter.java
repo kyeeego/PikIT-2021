@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.filter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,16 +19,11 @@ import java.io.IOException;
 
 @Service
 @Order(1)
+@RequiredArgsConstructor
 public class JwtAuthorizationFilter implements Filter {
 
     private final MyUserDetailsService myUserDetailsService;
     private final AccessTokenService jwtService;
-
-    @Autowired
-    public JwtAuthorizationFilter(MyUserDetailsService myUserDetailsService, AccessTokenService jwtService) {
-        this.myUserDetailsService = myUserDetailsService;
-        this.jwtService = jwtService;
-    }
 
     @Override
     public void doFilter(ServletRequest request,

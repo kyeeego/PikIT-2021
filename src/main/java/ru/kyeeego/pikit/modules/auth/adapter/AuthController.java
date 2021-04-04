@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.auth.adapter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +16,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final IAuthenticate authenticate;
-
-    @Autowired
-    public AuthController(IAuthenticate authenticate) {
-        this.authenticate = authenticate;
-    }
 
     @PostMapping
     public TokenPair authenticate(@RequestBody @Valid LogInDto logInDto) {

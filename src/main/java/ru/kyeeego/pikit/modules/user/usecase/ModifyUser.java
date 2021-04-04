@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.user.usecase;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,16 +14,11 @@ import ru.kyeeego.pikit.modules.user.port.UserRepository;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ModifyUser implements IModifyUser {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public ModifyUser(UserRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public User create(UserCreateDto userCreateDto) {

@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.requisition.adapter;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.kyeeego.pikit.modules.requisition.entity.Requisition;
@@ -11,16 +12,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/req/vot")
+@RequiredArgsConstructor
 public class VotingRequisitionController {
 
     private final IFindRequisition findRequisition;
     private final IVoteForRequisition voteForRequisition;
-
-    @Autowired
-    public VotingRequisitionController(IFindRequisition findRequisition, IVoteForRequisition voteForRequisition) {
-        this.findRequisition = findRequisition;
-        this.voteForRequisition = voteForRequisition;
-    }
 
     @GetMapping("/all")
     public List<Requisition> findAllInVotingStatus() {

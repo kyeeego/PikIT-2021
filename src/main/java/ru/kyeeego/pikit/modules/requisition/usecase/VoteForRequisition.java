@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.requisition.usecase;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,14 +15,10 @@ import ru.kyeeego.pikit.modules.user.entity.User;
 
 
 @Service
+@RequiredArgsConstructor
 public class VoteForRequisition implements IVoteForRequisition {
 
     private final RequisitionRepository repository;
-
-    @Autowired
-    public VoteForRequisition(RequisitionRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public void vote(Long id) {

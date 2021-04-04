@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.requisition.usecase;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,14 +24,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ModifyRequisition implements IModifyRequisition {
 
     private final RequisitionRepository repository;
-
-    @Autowired
-    public ModifyRequisition(RequisitionRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public Requisition approve(Long id, VotingDto votingDto) {

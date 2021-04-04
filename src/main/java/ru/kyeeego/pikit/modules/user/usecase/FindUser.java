@@ -1,5 +1,6 @@
 package ru.kyeeego.pikit.modules.user.usecase;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kyeeego.pikit.modules.user.entity.User;
@@ -12,14 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FindUser implements IFindUser {
 
     private final UserRepository repository;
-
-    @Autowired
-    public FindUser(UserRepository repository) {
-        this.repository = repository;
-    }
 
     @Override
     public UserResponse byId(Long id) {
