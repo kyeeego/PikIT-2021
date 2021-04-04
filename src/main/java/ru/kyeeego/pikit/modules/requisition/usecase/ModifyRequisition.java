@@ -1,6 +1,7 @@
 package ru.kyeeego.pikit.modules.requisition.usecase;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -79,5 +80,16 @@ public class ModifyRequisition implements IModifyRequisition {
         requisition.setStatus(status);
 
         return repository.save(requisition);
+    }
+
+    @Override
+    public Requisition addFile(Long id, String filename) {
+        Requisition req = repository
+                .findByIdAndStatus(id, RequisitionStatus.MODERATING)
+                .orElseThrow(RequisitionNotFoundException::new);
+
+        req.addDoc(filename);
+
+        return repository.save(req);
     }
 }

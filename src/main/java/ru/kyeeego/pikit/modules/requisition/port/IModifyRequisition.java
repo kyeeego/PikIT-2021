@@ -14,5 +14,7 @@ public interface IModifyRequisition {
 
     void delete(Long id);
 
+    Requisition addFile(Long id, String filename);
+
     Requisition updateOne(Long id, RequisitionUpdateDto requisitionUpdateDto);
 }

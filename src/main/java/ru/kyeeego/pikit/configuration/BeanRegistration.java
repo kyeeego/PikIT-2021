@@ -21,7 +21,8 @@ public class BeanRegistration {
         filter.setFilter(new ModifyReqAccessFilter(repository));
         filter.addUrlPatterns(
                 "/api/v1/req/new/update/*",
-                "/api/v1/req/new/delete/*"
+                "/api/v1/req/new/delete/*",
+                "/api/v1/req/new/file/*"
         );
 
         return filter;

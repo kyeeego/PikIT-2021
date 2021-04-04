@@ -80,15 +80,17 @@ public class NewRequisitionsController {
 
 
     @PostMapping("/file")
-    public void uploadFile(@RequestParam("file") MultipartFile file) {
+    public void uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
+        modifyRequisition.addFile(id, file.getOriginalFilename());
+
         fileStorage.save(file);
     }
 
+    // TODO: take out to a separate file controller
     @GetMapping("/file/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
         String[] splitted = filename.split("\\.");
         String ext = splitted[splitted.length - 1];
-
         Optional<MediaType> mediaType = Optional.ofNullable(extensionToMediaType.get(ext));
 
         return ResponseEntity
