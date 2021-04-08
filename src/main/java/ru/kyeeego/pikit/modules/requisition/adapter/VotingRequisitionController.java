@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kyeeego.pikit.modules.requisition.entity.Requisition;
 import ru.kyeeego.pikit.modules.requisition.entity.RequisitionStatus;
 import ru.kyeeego.pikit.modules.requisition.port.IFindRequisition;
+import ru.kyeeego.pikit.modules.requisition.port.ISetDone;
 import ru.kyeeego.pikit.modules.requisition.port.IVoteForRequisition;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class VotingRequisitionController {
 
     private final IFindRequisition findRequisition;
     private final IVoteForRequisition voteForRequisition;
+    private final ISetDone setDone;
 
     @GetMapping("/all")
     public List<Requisition> findAllInVotingStatus() {
@@ -32,6 +34,16 @@ public class VotingRequisitionController {
     public void vote(@RequestParam("id") Long id) {
         voteForRequisition.vote(id);
         voteForRequisition.update(id);
+    }
+
+    @PutMapping("/inprogress")
+    public void inProgress(@RequestParam("id") Long id) {
+        setDone.setInProgress(id);
+    }
+
+    @PutMapping("/done")
+    public void done(@RequestParam("id") Long id) {
+        setDone.setDone(id);
     }
 
 }

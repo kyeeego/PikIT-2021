@@ -1,4 +1,4 @@
-package ru.kyeeego.pikit.filter;
+package ru.kyeeego.pikit.filter.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

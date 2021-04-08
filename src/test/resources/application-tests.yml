@@ -7,9 +7,9 @@ spring:
   datasource:
     platform: postgres
     url: jdbc:postgresql://localhost:5432/pikit_test
-    username: user
-    password: pass
+    username: kyego
+    password: kyego
     driverClassName: org.postgresql.Driver
 
 accesstoken:
-  secret: "hxQ3jhQf1YTjDpLlh0RMrJioGpS6k1iJbXxF67u8ybInp2rwKMhKklPFX4QCxioNYhKvClseUJfIdidbWwh6QA=="
+  secret: "amFzZnNha2pma2Fqc2ZramFzZmtqYXNmaGtqYXNmaGtqYXNoZmtqc2Rmc25rYWZzZmpvc2FnYXNqZ2xrYWdqbGthZGpnYWZkZw=="

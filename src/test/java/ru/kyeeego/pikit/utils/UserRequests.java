@@ -7,14 +7,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 public class UserRequests {
-    public static Object ValidUser = new Object() {
-        public final String email = "Users@user.user";
-        public final String password = "pass";
-        public final String fingerprint = "uuid";
-    };
+    public static LogInDto ValidUser = new LogInDto(
+            "test@test.test",
+            "pass",
+            "uuid"
+    );
 
     public static Object InvalidPasswordUser = new Object() {
-        public final String email = "Users@user.user";
+        public final String email = "test@test.test";
         public final String password = "passs";
         public final String fingerprint = "uuid";
     };
@@ -26,13 +26,13 @@ public class UserRequests {
     };
 
     public static Object InvalidFingerprintUser = new Object() {
-        public final String email = "Users@user.user";
+        public final String email = "test@test.test";
         public final String password = "pass";
         public final String fingerprint = "invalid";
     };
 
     public static Object BadRequestUser = new Object() {
-        public final String email = "Usersuser.user";
+        public final String email = "testtest.test";
         public final String password = "pass";
         public final String fingerprint = "uuid";
     };

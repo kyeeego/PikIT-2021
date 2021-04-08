@@ -1,7 +1,6 @@
 package ru.kyeeego.pikit.configuration.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import ru.kyeeego.pikit.filter.InFilterExceptionFilter;
+import ru.kyeeego.pikit.filter.exception.InFilterExceptionFilter;
 import ru.kyeeego.pikit.filter.JwtAuthorizationFilter;
 import ru.kyeeego.pikit.modules.auth.entity.MyUserDetailsService;
 import ru.kyeeego.pikit.modules.user.entity.UserRole;
@@ -66,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/v1/req/new/file").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers(HttpMethod.DELETE, "/api/v1/req/new/delete").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers("/api/v1/req/new/**").hasAnyAuthority(UserRole.Access.MOD)
+                .antMatchers("/api/v1/req/vot/done").hasAnyAuthority(UserRole.Access.MOD)
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(inFilterExceptionFilter, ChannelProcessingFilter.class);
