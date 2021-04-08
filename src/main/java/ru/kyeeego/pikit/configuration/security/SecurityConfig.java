@@ -54,10 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         })
                 );
 
+        // TODO: define access in swagger
         httpSecurity.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v1/users/create").permitAll()
-                .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                .antMatchers("api/v1/users/create",
+                        "/auth/**",
+                        "/v2/**",
+                        "/swagger-ui/").permitAll()
                 .antMatchers("/api/test/super").hasAnyAuthority(UserRole.Access.SUPER)
                 .antMatchers("/api/v1/req/new").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers("/static/**").permitAll()
@@ -65,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/v1/req/new/file").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers(HttpMethod.DELETE, "/api/v1/req/new/delete").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers("/api/v1/req/new/**").hasAnyAuthority(UserRole.Access.MOD)
+                .antMatchers("/api/v1/req/vot/inprogress").hasAnyAuthority(UserRole.Access.MOD)
                 .antMatchers("/api/v1/req/vot/done").hasAnyAuthority(UserRole.Access.MOD)
                 .anyRequest().authenticated();
 
