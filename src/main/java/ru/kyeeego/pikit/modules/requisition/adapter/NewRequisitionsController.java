@@ -28,17 +28,6 @@ public class NewRequisitionsController {
     private final ICreateRequisition createRequisition;
     private final IFindRequisition findRequisition;
     private final IModifyRequisition modifyRequisition;
-    private final IFileStorage fileStorage;
-
-    private final Map<String, MediaType> extensionToMediaType = Map.of(
-            "png", MediaType.IMAGE_PNG,
-            "jpeg", MediaType.IMAGE_JPEG,
-            "jpg", MediaType.IMAGE_JPEG,
-            "html", MediaType.TEXT_HTML,
-            "xml", MediaType.TEXT_XML,
-            "pdf", MediaType.APPLICATION_PDF,
-            "gif", MediaType.IMAGE_GIF
-    );
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('DEFAULT')")
@@ -76,27 +65,6 @@ public class NewRequisitionsController {
     @DeleteMapping("/delete")
     public void deleteOne(@RequestParam("id") Long id) {
         modifyRequisition.delete(id);
-    }
-
-
-    @PostMapping("/file")
-    public void uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id") Long id) {
-        modifyRequisition.addFile(id, file.getOriginalFilename());
-
-        fileStorage.save(file);
-    }
-
-    // TODO: take out to a separate file controller
-    @GetMapping("/file/{filename:.+}")
-    public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
-        String[] splitted = filename.split("\\.");
-        String ext = splitted[splitted.length - 1];
-        Optional<MediaType> mediaType = Optional.ofNullable(extensionToMediaType.get(ext));
-
-        return ResponseEntity
-                .ok()
-                .contentType(mediaType.orElse(MediaType.TEXT_PLAIN))
-                .body(fileStorage.load(filename));
     }
 
     // TODO: email notifications on status change

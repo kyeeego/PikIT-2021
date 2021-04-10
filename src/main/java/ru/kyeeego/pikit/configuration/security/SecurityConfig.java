@@ -54,12 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         })
                 );
 
-        // TODO: define access in swagger
         httpSecurity.authorizeRequests()
                 .antMatchers("api/v1/users/create",
                         "/auth/**",
                         "/v2/**",
-                        "/swagger-ui/").permitAll()
+                        "/swagger-ui/**",
+                        "/swagger-resources/**").permitAll()
                 .antMatchers("/api/test/super").hasAnyAuthority(UserRole.Access.SUPER)
                 .antMatchers("/api/v1/req/new").hasAnyAuthority(UserRole.Access.DEFAULT)
                 .antMatchers("/static/**").permitAll()
