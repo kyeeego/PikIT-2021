@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 );
 
         httpSecurity.authorizeRequests()
-                .antMatchers("api/v1/users/create",
+                .antMatchers("/api/v1/users/create",
                         "/auth/**",
                         "/v2/**",
                         "/swagger-ui/**",

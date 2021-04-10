@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.kyeeego.pikit.modules.email.port.IEmailService;
 import ru.kyeeego.pikit.modules.files.port.IFileStorage;
 import ru.kyeeego.pikit.modules.requisition.entity.Requisition;
 import ru.kyeeego.pikit.modules.requisition.entity.RequisitionStatus;
@@ -28,6 +29,7 @@ public class NewRequisitionsController {
     private final ICreateRequisition createRequisition;
     private final IFindRequisition findRequisition;
     private final IModifyRequisition modifyRequisition;
+    private final IEmailService emailService;
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('DEFAULT')")
@@ -48,24 +50,29 @@ public class NewRequisitionsController {
     @PutMapping("/update")
     public Requisition updateOne(@RequestParam("id") Long id,
                                  @RequestBody RequisitionUpdateDto body) {
-        return modifyRequisition.updateOne(id, body);
+        Requisition req = modifyRequisition.updateOne(id, body);
+        emailService.send(req.getAuthorEmail(), "Your requisition has been updated: " + req.getTitle());
+        return req;
     }
 
     @PutMapping("/approve")
     public Requisition approveOne(@RequestParam("id") Long id,
                                   @RequestBody @Valid VotingDto votingDto) {
-        return modifyRequisition.approve(id, votingDto);
+        Requisition req = modifyRequisition.approve(id, votingDto);
+        emailService.send(req.getAuthorEmail(), "Your requisition has been approved: " + req.getTitle());
+        return req;
     }
 
     @PutMapping("/close")
     public Requisition closeOne(@RequestParam("id") Long id) {
-        return modifyRequisition.close(id);
+        Requisition req = modifyRequisition.close(id);
+        emailService.send(req.getAuthorEmail(), "Unfortunately, your requisition has been closed: " + req.getTitle());
+        return req;
     }
 
     @DeleteMapping("/delete")
     public void deleteOne(@RequestParam("id") Long id) {
-        modifyRequisition.delete(id);
+        Requisition req = modifyRequisition.delete(id);
+        emailService.send(req.getAuthorEmail(), "Your requisition has been deleted: " + req.getTitle());
     }
-
-    // TODO: email notifications on status change
 }

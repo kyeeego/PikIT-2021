@@ -65,8 +65,10 @@ public class ModifyRequisition implements IModifyRequisition {
     }
 
     @Override
-    public void delete(Long id) {
+    public Requisition delete(Long id) {
+        Requisition req = repository.findById(id).orElseThrow(RequisitionNotFoundException::new);
         repository.deleteById(id);
+        return req;
     }
 
     private Requisition setRequisitionStatusById(Long id, RequisitionStatus status) {

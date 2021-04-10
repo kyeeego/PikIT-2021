@@ -12,7 +12,7 @@ public interface IModifyRequisition {
 
     Requisition close(Long id);
 
-    void delete(Long id);
+    Requisition delete(Long id);
 
     Requisition addFile(Long id, String filename);
 
